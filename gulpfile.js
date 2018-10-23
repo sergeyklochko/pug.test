@@ -33,7 +33,7 @@ function buildImages(){
   ];
 
 function buildCSS() {
-  console.log(destdir);
+  console.log('Target directory: '+destdir);
   return gulp.src(cssFiles)
     .pipe(concat('all.css'))
     .pipe(autoprefixer({
@@ -46,16 +46,18 @@ function buildCSS() {
     .pipe(gulp.dest(destdir+'/css'));
 }
 
-function publish(){
-  destdir = './docs';
-  clean();
-  buildCSS();
-  buildHTML();
-  buildImages();
-  return console.log(destdir);
+function buildProject(done){
+  build();
+  done();
 }
 
-function buildProject(){
+function publish(done){
+  destdir = './docs';
+  build();
+  done();
+}
+
+function build() {
   clean();
   buildCSS();
   buildHTML();
@@ -71,5 +73,3 @@ gulp.task('pug', buildHTML); //process HTML
 gulp.task('img', buildImages); // process images
 gulp.task('build', buildProject); // build for local test
 gulp.task('publish', publish) // publish it to GitPages
-
-// 123
