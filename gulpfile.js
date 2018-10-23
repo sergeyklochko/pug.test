@@ -6,13 +6,14 @@ const autoprefixer = require('gulp-autoprefixer');
 const cleanCSS = require('gulp-clean-css')
 const flatten = require('gulp-flatten');
 
+const destdir = './docs';
 
 function buildHTML() {
   return gulp.src('./src/*.pug')
   .pipe(pug({
     // Your options in here.
   }))
-  .pipe(gulp.dest('./build'))
+  .pipe(gulp.dest(destdir))
 }
 
 const imgFiles = [
@@ -23,7 +24,7 @@ const imgFiles = [
 function buildImages(){
   return gulp.src(imgFiles)
   .pipe(flatten())
-  .pipe(gulp.dest('./build/img'))
+  .pipe(gulp.dest(destdir+'/img'))
 }
 
   const cssFiles = [
@@ -41,14 +42,16 @@ function buildCSS() {
     .pipe(cleanCSS({
       level: 2
     }))
-    .pipe(gulp.dest('./build/css'));
+    .pipe(gulp.dest(destdir+'/css'));
 }
 
 function clean(){
-  return del(['build/*'])
+  return del([destdir+'/*'])
 }
 
 gulp.task('styles', buildCSS);
 gulp.task('pug', buildHTML);
 gulp.task('img', buildImages);
 gulp.task('build', gulp.series(clean, gulp.parallel('styles', 'pug', 'img')));
+
+// 123
